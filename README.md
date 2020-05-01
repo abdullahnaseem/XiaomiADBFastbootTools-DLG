@@ -2,15 +2,18 @@
 Generates a **XiaomiADBFastbootTools** compatiable list of apps and bloatware on your device. 
 ## Link to the orignal [XiaomiADBFastbootTools](https://github.com/Szaki/XiaomiADBFastbootTools "XiaomiADBFastbootTools") 
 
+
 ### Features
 * Allows you to manage all your apps with **XiaomiADBFastbootTools**.
 * Manage apps not available in **XiaomiADBFastbootTools** by default.
 * Check Installed Bloatware apps that are safe to remove.
 
+
 ### To-do
 * Fetch the latest *debloat list* from **GitHub**
 * Automatically extract *app list* from device. 
 * Support more platforms.
+
 
 ### Usage
 * Download the latest release.
@@ -35,4 +38,9 @@ List names and file format can change in the future versions. To avoid any error
 **package-list.txt** - Generated list of all apps installed on your device, compatiable with **XiaomiADBFastbootTools**.
 
 **debloat-list.txt** - Generated list of safe to remove bloatware installed on your device, compatiable with **XiaomiADBFastbootTools**.
+
   
+
+
+# DISCLAIMER 
+Although the *debloat list* contains apps that have been verified and tested by users, Removing some apps may still cause problems or bugs on some systems. 
