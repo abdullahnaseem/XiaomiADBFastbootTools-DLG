@@ -1,7 +1,8 @@
 import os
 
+
 def clear():
-    os.system( 'cls' )
+    os.system('cls')
     print("")
     print("")
     print("-------------------------------------------------")
@@ -10,6 +11,7 @@ def clear():
     print("github./abdullahnaseem/XiaomiADBFastbootTools-DLG")
     print("-------------------------------------------------")
     print("")
+
 
 def getpackagename(line):
     start = line.rfind("/") + len("/")
@@ -27,7 +29,7 @@ def getpackage(line):
 
 def checkfile(file):
     try:
-        with open(file) as fp:
+        with open(file):
             return True
     except IOError:
         # print("File not accessible")
@@ -55,11 +57,61 @@ def cpl(file):
             line = line.replace('\n', '').replace('\r', '')
 
             if not line:
-                break
+                return packagedict
+                # break
             else:
                 packagename = getpackagename(line)
                 package = getpackage(line)
                 packagedict[package] = packagename
+
+
+def csl(file):
+    with open(customindex) as fp:
+
+        line = fp.readline()
+        line = line.replace('\n', '').replace('\r', '')
+
+        if line.startswith('com'):
+            package = line  # com.miui.app
+            packagename = False
+            #print('{}:{}'.format(package, packagename))
+        else:
+            package = False
+            packagename = line  # miui-app
+            #print('{}:{}'.format(package, packagename))
+
+        open(customlist, 'w').close()
+
+        while line:
+            with open(customlist, 'a') as custlist:
+                if package:
+                    if package in packagedict:
+                        # print('Found Package')
+                        packagename = packagedict.get(package)
+                        custlist.write("{}:{}\n".format(package, packagename))
+                        # custlist.write("{}\n".format(package))
+                elif packagename:
+                    for pkg, pkgn in packagedict.items():
+                        if packagename == pkgn:
+                            # print('Found Package Name')
+                            package = pkg
+                            custlist.write("{}:{}\n".format(package, packagename))
+                            # custlist.write("{}\n".format(package))
+
+            line = fp.readline()
+            line = line.replace('\n', '').replace('\r', '')
+
+            if not line:
+                break
+            else:
+                if line.startswith('com'):
+                    package = line  # com.miui.app
+                    packagename = False
+                    #print('{}:{}'.format(package, packagename))
+                else:
+                    package = False
+                    packagename = line  # miui-app
+                    #print('{}:{}'.format(package, packagename))
 
 
 def cdl(file):
@@ -87,7 +139,6 @@ def cdl(file):
                 package = line
 
 
-
 print("")
 print("")
 print("-------------------------------------------------")
@@ -98,7 +149,7 @@ print("-------------------------------------------------")
 print("")
 print("")
 
-
+# implement app.yml from documents
 
 appsindex = 'apps.txt'
 packagelist = 'package-list.txt'
@@ -106,6 +157,8 @@ packagelist = 'package-list.txt'
 debloatindex = 'debloat.txt'
 debloatlist = 'debloat-list.txt'
 
+customindex = 'custom.txt'
+customlist = 'custom-list.txt'
 
 packagedict = {}
 
@@ -113,6 +166,7 @@ packagedict = {}
 print("Checking Files...")
 input("Press Enter to continue...")
 clear()
+
 
 if checkfile(appsindex) is True:
     print('')
@@ -122,9 +176,16 @@ if checkfile(appsindex) is True:
     print('')
     print('Creating Package-List Now')
     input("Press Enter to continue...")
-    cpl(appsindex)
-    print("Successfully Created Package-List")
-    print("{} created from {}".format(packagelist, appsindex))
+    packagedict = cpl(appsindex)
+    if bool(packagedict):
+        print("Successfully Created Package-List")
+        print("{} created from {}".format(packagelist, appsindex))
+    else: 
+        print("There was an Error")
+        print('The Program will now Exit')
+        input("Press Enter to continue...")
+        print('')
+        exit()
 else:
     print('')
     print('------------------')
@@ -139,6 +200,23 @@ else:
     exit()
 
 
+if checkfile(customindex) is True:
+    print('')
+    print('-----------------')
+    print('Custom List Found')
+    print('-----------------')
+    print('')
+    print('Creating Custom-List Now')
+    input("Press Enter to continue...")
+    csl(customindex)
+    print("Successfully Created Custom-List")
+    print("{} created from {}".format(customlist, customindex))
+    print('')
+    input("Press Enter to continue...")
+    clear()
+    exit()
+
+
 if checkfile(debloatindex) is True:
     print('')
     print('------------------')
@@ -148,7 +226,7 @@ if checkfile(debloatindex) is True:
     print('Creating Debloat-List Now')
     input("Press Enter to continue...")
     cdl(debloatindex)
-    print("Successfully Created Package-List")
+    print("Successfully Created Debloat-List")
     print("{} created from {}".format(debloatlist, debloatindex))
 else:
     print('')
@@ -167,4 +245,3 @@ else:
 print('')
 input("Press Enter to continue...")
 clear()
-
